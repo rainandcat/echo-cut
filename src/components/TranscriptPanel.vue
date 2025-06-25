@@ -1,20 +1,30 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useVideoStore } from "../stores/video";
 import TranscriptSection from "./TranscriptSection.vue";
-import { getTranscriptData } from "../api/transcript.js";
+import { getTranscriptData } from "../api/transcript";
 
 const transcript = ref({ sections: [] });
+const loading = ref(true);
 
 onMounted(async () => {
   transcript.value = await getTranscriptData();
+  loading.value = false;
 });
 </script>
 
 <template>
-  <div>
+  <div class="text-left">
     <h2 class="text-2xl font-bold mb-4">Transcript</h2>
-    <div v-for="section in transcript.sections" :key="section.title">
-      <TranscriptSection :section="section" />
+    <div v-if="loading" class="text-gray-500 text-sm">
+      Loading transcript...
+    </div>
+    <div v-else>
+      <TranscriptSection
+        v-for="section in transcript.sections"
+        :key="section.title"
+        :section="section"
+      />
     </div>
   </div>
 </template>

@@ -6,9 +6,11 @@ import Timeline from "./components/Timeline.vue";
 import VideoUpload from "./components/VideoUpload.vue";
 
 const uploadedVideoUrl = ref("");
+const uploadedVideoName = ref("");
 
 function handleVideoUpload(file) {
   uploadedVideoUrl.value = URL.createObjectURL(file);
+  uploadedVideoName.value = file.name;
 }
 </script>
 
@@ -25,7 +27,10 @@ function handleVideoUpload(file) {
         <TranscriptPanel />
       </div>
       <div class="w-1/2 bg-dark text-white p-4 flex flex-col">
-        <VideoPreview :videoUrl="uploadedVideoUrl" />
+        <VideoPreview
+          :videoUrl="uploadedVideoUrl"
+          :videoName="uploadedVideoName"
+        />
         <Timeline />
       </div>
     </div>
