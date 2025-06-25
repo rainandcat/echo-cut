@@ -67,3 +67,5 @@ The `getTranscriptData()` function simulates a backend AI response with:
 - Mobile layout refinement
 - Sentence-level editing
 - Loading animations
+
+See [technical-choices.md](./technical-choices.md) for detailed design decisions.

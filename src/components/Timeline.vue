@@ -1,14 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { getTranscriptData } from "../api/transcript.js";
+import { ref, watch } from "vue";
+import { useVideoStore } from "../stores/video";
 
 const sections = ref([]);
 const duration = 80;
 
-onMounted(async () => {
-  const data = await getTranscriptData();
-  sections.value = data.sections;
-});
+const store = useVideoStore();
 
 function getStyle(sentence) {
   const percentStart = (sentence.start / duration) * 100;
@@ -24,10 +21,18 @@ function getHighlightedSentences(section) {
     ? section.sentences.filter((s) => s.highlight)
     : [];
 }
+
+watch(
+  () => store.transcript.sections,
+  (val) => {
+    sections.value = val;
+  },
+  { deep: true }
+);
 </script>
 
 <template>
-  <div class="mt-2 h-4 bg-gray-700 rounded relative">
+  <div class="h-4 bg-gray-700 rounded relative">
     <div v-for="(section, i) in sections" :key="i">
       <div
         v-for="sentence in getHighlightedSentences(section)"

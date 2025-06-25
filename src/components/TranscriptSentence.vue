@@ -1,23 +1,15 @@
 <script setup>
 import { ref } from "vue";
 import { useVideoStore } from "../stores/video";
+import { formatTime } from "../utils/time";
 
 const props = defineProps({ sentence: Object });
 const sentenceEl = ref(null);
 const store = useVideoStore();
 
 function toggleHighlight() {
-  props.sentence.highlight = !props.sentence.highlight;
-}
-
-function formatTime(seconds) {
-  const m = Math.floor(seconds / 60)
-    .toString()
-    .padStart(2, "0");
-  const s = Math.floor(seconds % 60)
-    .toString()
-    .padStart(2, "0");
-  return `${m}:${s}`;
+  // props.sentence.highlight = !props.sentence.highlight;
+  store.toggleHighlight(props.sentence);
 }
 
 function handleTimestampClick(e) {

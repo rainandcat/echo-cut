@@ -13,8 +13,8 @@
           "highlight": true
         },
         {
-          "start": 3.6,
-          "end": 7.2,
+          "start": 6,
+          "end": 10,
           "text": "We will walk you through key moments.",
           "highlight": false
         }
@@ -35,6 +35,25 @@
           "start": 23,
           "end": 27.8,
           "text": "You can edit transcripts easily.",
+          "highlight": true
+        }
+      ]
+    },
+    {
+      "title": "Conclusion",
+      "start": 30,
+      "end": 45,
+      "sentences": [
+        {
+          "text": "Thank you for watching.",
+          "start": 30,
+          "end": 35,
+          "highlight": false
+        },
+        {
+          "text": "We hope you enjoy the experience.",
+          "start": 36,
+          "end": 44,
           "highlight": true
         }
       ]

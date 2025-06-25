@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import TranscriptPanel from "./components/TranscriptPanel.vue";
 import VideoPreview from "./components/VideoPreview.vue";
-import Timeline from "./components/Timeline.vue";
 import VideoUpload from "./components/VideoUpload.vue";
 
 const uploadedVideoUrl = ref("");
@@ -22,16 +21,20 @@ function handleVideoUpload(file) {
     >
       <VideoUpload @video-selected="handleVideoUpload" />
     </div>
-    <div class="flex h-screen" v-if="uploadedVideoUrl">
-      <div class="w-1/2 overflow-y-auto p-4 bg-light text-textMain">
-        <TranscriptPanel />
-      </div>
-      <div class="w-1/2 bg-dark text-white p-4 flex flex-col">
-        <VideoPreview
-          :videoUrl="uploadedVideoUrl"
-          :videoName="uploadedVideoName"
-        />
-        <Timeline />
+
+    <div class="h-screen" v-if="uploadedVideoUrl">
+      <div class="flex flex-col md:flex-row h-screen">
+        <div
+          class="w-full md:w-1/2 overflow-y-auto p-4 bg-light text-textMain order-1 md:order-0"
+        >
+          <TranscriptPanel />
+        </div>
+        <div class="w-full md:w-1/2 bg-dark text-white p-4 order-0 md:order-1">
+          <VideoPreview
+            :videoUrl="uploadedVideoUrl"
+            :videoName="uploadedVideoName"
+          />
+        </div>
       </div>
     </div>
   </div>

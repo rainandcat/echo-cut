@@ -6,9 +6,11 @@ import { getTranscriptData } from "../api/transcript";
 
 const transcript = ref({ sections: [] });
 const loading = ref(true);
+const store = useVideoStore();
 
 onMounted(async () => {
   transcript.value = await getTranscriptData();
+  store.setTranscript(transcript.value);
   loading.value = false;
 });
 </script>

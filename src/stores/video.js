@@ -1,9 +1,26 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 
-export const useVideoStore = defineStore('video', () => {
-  const playbackTime = ref(0)
-  const seekTo = ref(() => {}) 
-  
-  return { playbackTime, seekTo }
+export const useVideoStore = defineStore('video', {
+  state: () => ({
+    playbackTime: 0,
+    seekTo: () => {},
+    transcript: {
+      sections: []
+    }
+  }),
+  actions: {
+    setTranscript(data) {
+      this.transcript = data
+    },
+    toggleHighlight(target) {
+      for (const section of this.transcript.sections) {
+        const sentence = section.sentences.find(
+          (s) => s.start === target.start && s.text === target.text
+        )
+        if (sentence) {
+          sentence.highlight = !sentence.highlight
+        }
+      }
+    }
+  }
 })

@@ -1,11 +1,12 @@
 
 <script setup>
 import { computed } from "vue";
+import { formatTime } from "../utils/time";
+import Timeline from "./Timeline.vue";
 
 const props = defineProps({
   isPlaying: Boolean,
   currentTime: Number,
-  duration: Number,
 });
 
 const emit = defineEmits(["play", "pause", "seek"]);
@@ -19,17 +20,6 @@ function handleSeek(event) {
 }
 
 const formattedCurrent = computed(() => formatTime(props.currentTime));
-const formattedDuration = computed(() => formatTime(props.duration));
-
-function formatTime(seconds) {
-  const m = Math.floor(seconds / 60)
-    .toString()
-    .padStart(2, "0");
-  const s = Math.floor(seconds % 60)
-    .toString()
-    .padStart(2, "0");
-  return `${m}:${s}`;
-}
 </script>
 
 <template>
@@ -42,17 +32,18 @@ function formatTime(seconds) {
     >
       {{ isPlaying ? "Pause" : "Play" }}
     </button>
-    <input
-      type="range"
-      min="0"
-      :max="duration"
-      :value="currentTime"
-      step="0.1"
-      @input="handleSeek"
-      class="w-full"
-    />
-    <span class="text-sm"
-      >{{ formattedCurrent }} / {{ formattedDuration }}</span
-    >
+    <div class="w-full">
+      <input
+        type="range"
+        min="0"
+        :value="currentTime"
+        step="0.1"
+        @input="handleSeek"
+        class="w-full"
+      />
+      <Timeline />
+    </div>
+
+    <span class="text-sm">{{ formattedCurrent }}</span>
   </div>
 </template>
