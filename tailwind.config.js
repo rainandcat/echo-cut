@@ -9,7 +9,10 @@ export default {
       colors: {
         primary: '#6B46C1',
         secondary: '#8b5cf6',
-        light: '#F3F4F6',
+        light: '#e6d1f3',
+        dark:'#1F2937',
+        time:'#b57fd4',
+        textMain:'#1a0f25',
         'brand-border': '#D8B4FE',
       },
       boxShadow: {

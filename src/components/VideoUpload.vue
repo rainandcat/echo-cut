@@ -1,3 +1,14 @@
+<script setup>
+const emit = defineEmits(["video-selected"]);
+
+function onFileChange(e) {
+  const file = e.target.files[0];
+  if (file) {
+    emit("video-selected", file);
+  }
+}
+</script>
+
 <template>
   <div
     class="border-2 border-dashed border-secondary rounded-xl p-10 shadow-card"
@@ -25,14 +36,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-const emit = defineEmits(["video-selected"]);
-
-function onFileChange(e) {
-  const file = e.target.files[0];
-  if (file) {
-    emit("video-selected", file);
-  }
-}
-</script>

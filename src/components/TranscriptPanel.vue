@@ -1,6 +1,13 @@
 <script setup>
+import { ref, onMounted } from "vue";
 import TranscriptSection from "./TranscriptSection.vue";
-import transcript from "../data/mock-transcript.json";
+import { getTranscriptData } from "../api/transcript.js";
+
+const transcript = ref({ sections: [] });
+
+onMounted(async () => {
+  transcript.value = await getTranscriptData();
+});
 </script>
 
 <template>

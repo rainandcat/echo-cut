@@ -1,22 +1,14 @@
-<template>
-  <div class="mt-2 h-4 bg-gray-700 rounded relative">
-    <div v-for="(section, i) in sections" :key="i">
-      <div
-        v-for="sentence in getHighlightedSentences(section)"
-        :key="sentence.start"
-        class="absolute h-4 bg-sky-400 rounded"
-        :style="getStyle(sentence)"
-      ></div>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { ref } from "vue";
-import transcript from "../data/mock-transcript.json";
+import { ref, onMounted } from "vue";
+import { getTranscriptData } from "../api/transcript.js";
 
-const sections = ref(transcript.sections);
+const sections = ref([]);
 const duration = 80;
+
+onMounted(async () => {
+  const data = await getTranscriptData();
+  sections.value = data.sections;
+});
 
 function getStyle(sentence) {
   const percentStart = (sentence.start / duration) * 100;
@@ -33,3 +25,16 @@ function getHighlightedSentences(section) {
     : [];
 }
 </script>
+
+<template>
+  <div class="mt-2 h-4 bg-gray-700 rounded relative">
+    <div v-for="(section, i) in sections" :key="i">
+      <div
+        v-for="sentence in getHighlightedSentences(section)"
+        :key="sentence.start"
+        class="absolute h-4 bg-sky-400 rounded"
+        :style="getStyle(sentence)"
+      ></div>
+    </div>
+  </div>
+</template>

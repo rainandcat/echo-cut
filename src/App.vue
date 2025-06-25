@@ -20,11 +20,11 @@ function handleVideoUpload(file) {
     >
       <VideoUpload @video-selected="handleVideoUpload" />
     </div>
-    <div class="flex h-screen bg-gray-100" v-if="uploadedVideoUrl">
-      <div class="w-1/2 overflow-y-auto p-4 bg-white">
+    <div class="flex h-screen" v-if="uploadedVideoUrl">
+      <div class="w-1/2 overflow-y-auto p-4 bg-light text-textMain">
         <TranscriptPanel />
       </div>
-      <div class="w-1/2 bg-gray-800 text-white p-4 flex flex-col">
+      <div class="w-1/2 bg-dark text-white p-4 flex flex-col">
         <VideoPreview :videoUrl="uploadedVideoUrl" />
         <Timeline />
       </div>

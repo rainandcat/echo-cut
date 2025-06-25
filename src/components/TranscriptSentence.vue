@@ -1,18 +1,3 @@
-<template>
-  <div
-    :class="[
-      'cursor-pointer px-2 py-1 rounded my-1',
-      sentence.highlight ? 'bg-sky-300' : 'hover:bg-gray-200',
-    ]"
-    @click="toggleHighlight"
-  >
-    <span class="text-blue-600 font-mono mr-2">{{
-      formatTime(sentence.start)
-    }}</span>
-    {{ sentence.text }}
-  </div>
-</template>
-
 <script setup>
 const props = defineProps({ sentence: Object });
 
@@ -30,3 +15,18 @@ function formatTime(seconds) {
   return `${m}:${s}`;
 }
 </script>
+
+<template>
+  <div
+    :class="[
+      'cursor-pointer px-2 py-1 rounded my-1',
+      sentence.highlight ? 'bg-primary text-white' : 'hover:bg-secondary',
+    ]"
+    @click="toggleHighlight"
+  >
+    <span class="text-time font-mono mr-2">{{
+      formatTime(sentence.start)
+    }}</span>
+    {{ sentence.text }}
+  </div>
+</template>
