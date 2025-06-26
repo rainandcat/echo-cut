@@ -44,7 +44,7 @@ const highlightRanges = computed(() => {
     <div
       v-for="(range, idx) in highlightRanges"
       :key="idx"
-      class="absolute h-full bg-blue-400 rounded"
+      class="absolute h-full bg-secondary rounded"
       :style="{
         left: `${(range.start / duration) * 100}%`,
         width: `${((range.end - range.start) / duration) * 100}%`,

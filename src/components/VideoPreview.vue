@@ -41,9 +41,41 @@ function handlePause() {
   isPlaying.value = false;
 }
 
-function handleSeek(time) {
-  seek(time);
-}
+const goToNext = () => {
+  const now = store.playbackTime;
+  const next = highlightRanges.value.find((r) => r.start > now);
+  if (next) {
+    const shouldPlay = isPlaying.value;
+    store.seekTo(next.start, shouldPlay);
+  }
+};
+
+const goToPrev = () => {
+  const now = store.playbackTime;
+  const highlights = highlightRanges.value;
+
+  if (!highlights.length) return;
+
+  const currentIndex = highlights.findIndex(
+    (r) => now >= r.start && now <= r.end
+  );
+
+  let target;
+
+  if (currentIndex > 0) {
+    target = highlights[currentIndex - 1];
+  } else if (currentIndex === -1) {
+    const reversed = [...highlights].reverse();
+    target = reversed.find((r) => r.start < now);
+  } else {
+    target = highlights[0];
+  }
+
+  if (target) {
+    const shouldPlay = isPlaying.value;
+    store.seekTo(target.start, shouldPlay);
+  }
+};
 
 watch(
   () => store.transcript.sections,
@@ -77,15 +109,19 @@ watch(highlightMode, (enabled) => {
 });
 
 onMounted(() => {
-  store.seekTo = (time) => {
-    pause();
-    isPlaying.value = false;
+  store.seekTo = (time, shouldPlay = false) => {
+    if (isPlaying.value) {
+      pause();
+      isPlaying.value = false;
+    }
 
     const resumeRange = seekTo(time);
 
-    if (highlightMode.value && resumeRange && !manuallyPaused.value) {
+    if (highlightMode.value && resumeRange && shouldPlay) {
+      manuallyPaused.value = false;
       playNext(true, resumeRange);
     } else {
+      manuallyPaused.value = true;
       seek(time);
     }
   };
@@ -144,7 +180,8 @@ const duration = computed(() => video.value?.duration || 0);
       :duration="duration"
       @play="handlePlay"
       @pause="handlePause"
-      @seek="handleSeek"
+      @goToNext="goToNext"
+      @goToPrev="goToPrev"
     />
   </div>
 </template>
