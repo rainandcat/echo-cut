@@ -16,8 +16,16 @@ const highlightRanges = ref([]);
 const manuallyPaused = ref(true);
 
 const { play, pause, seek, onTimeUpdate } = useVideoPreviewController(video);
-const { isPlaying, playNext, stop, seekTo, restart, hasEnded, currentIndex } =
-  useVideoPreviewPlayer(video, highlightRanges, currentSubtitle);
+const {
+  isPlaying,
+  playNext,
+  stop,
+  seekTo,
+  restart,
+  hasEnded,
+  currentIndex,
+  fading,
+} = useVideoPreviewPlayer(video, highlightRanges, currentSubtitle);
 
 function handlePlay() {
   if (highlightMode.value) {
@@ -45,8 +53,7 @@ const goToNext = () => {
   const now = store.playbackTime;
   const next = highlightRanges.value.find((r) => r.start > now);
   if (next) {
-    const shouldPlay = isPlaying.value;
-    store.seekTo(next.start, shouldPlay);
+    store.seekTo(next.start);
   }
 };
 
@@ -72,8 +79,7 @@ const goToPrev = () => {
   }
 
   if (target) {
-    const shouldPlay = isPlaying.value;
-    store.seekTo(target.start, shouldPlay);
+    store.seekTo(target.start);
   }
 };
 
@@ -109,7 +115,9 @@ watch(highlightMode, (enabled) => {
 });
 
 onMounted(() => {
-  store.seekTo = (time, shouldPlay = false) => {
+  store.seekTo = (time) => {
+    const shouldPlay = isPlaying.value;
+
     if (isPlaying.value) {
       pause();
       isPlaying.value = false;
@@ -177,11 +185,13 @@ const duration = computed(() => video.value?.duration || 0);
       <video
         ref="video"
         class="w-full h-full transition-opacity duration-500"
+        :class="{ 'opacity-0': fading, 'opacity-100': !fading }"
         :src="videoUrl"
       ></video>
 
       <div
         class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm bg-black bg-opacity-60 px-4 py-2 rounded transition-opacity duration-500 max-w-[90%] text-center"
+        :class="{ 'opacity-0': fading, 'opacity-100': !fading }"
       >
         {{ currentSubtitle }}
       </div>

@@ -4,6 +4,7 @@ export function useVideoPreviewPlayer(videoRef, highlights, subtitleRef) {
   const isPlaying = ref(false);
   const currentIndex = ref(0);
   const hasEnded = ref(false);
+  const fading = ref(false)
 
   let resumeTimeout = null;
 
@@ -15,6 +16,7 @@ export function useVideoPreviewPlayer(videoRef, highlights, subtitleRef) {
     if (!videoRef.value || currentIndex.value >= highlights.value.length) {
       isPlaying.value = false;
       hasEnded.value = true;
+      fading.value=true
       resetSubtitle();
       return;
     }
@@ -31,6 +33,7 @@ export function useVideoPreviewPlayer(videoRef, highlights, subtitleRef) {
     videoRef.value.currentTime = startTime;
     videoRef.value.play();
     isPlaying.value = true;
+    fading.value = false;
 
     if (resumeTimeout) clearTimeout(resumeTimeout);
 
@@ -39,9 +42,13 @@ export function useVideoPreviewPlayer(videoRef, highlights, subtitleRef) {
 
       videoRef.value.pause();
       isPlaying.value = false;
-      currentIndex.value++;
-      resetSubtitle();
-      playNext();
+
+      fading.value = true;
+      setTimeout(() => {
+        currentIndex.value++;
+        resetSubtitle();
+        playNext();
+      }, 500);
     }, duration);
   }
 
@@ -80,6 +87,7 @@ export function useVideoPreviewPlayer(videoRef, highlights, subtitleRef) {
     isPlaying,
     hasEnded, 
     currentIndex,
+    fading,
     playNext,
     stop,
     seekTo,
