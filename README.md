@@ -9,6 +9,7 @@ EchoCut is a demo project for a video highlight editing tool powered by mock AI.
 - Tailwind CSS (UI styling)
 - Composition API
 - Mock API (simulated AI transcript processing)
+- Custom player controller
 
 ## Project Structure
 
@@ -21,7 +22,10 @@ src/
 │   ├── TranscriptSentence.vue
 │   ├── VideoControls.vue
 │   └── VideoPreview.vue
-├── stores/            # Pinia store for shared playback data
+├── stores/            # Pinia store for shared playback
+├── data
+├── stores/                  # Pinia store
+├── utils/                   # Shared helpers
 └── App.vue
 ```
 
@@ -31,8 +35,7 @@ src/
 - Simulated AI transcription and highlight suggestion
 - Sentence selection with timestamp navigation
 - Preview mode with highlight playback and subtitle overlay
-- Custom video controls (play, pause, seek)
-- Highlight Mode toggle
+- Custom timeline with highlights and playback markers
 - Auto-scroll and playback-time synchronization
 - Responsive layout (desktop-first, mobile-adaptive)
 

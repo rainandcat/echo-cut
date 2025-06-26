@@ -27,17 +27,32 @@ This document outlines the technical decisions made during the development of th
 
 ---
 
-## 4. Video Control Logic
+## 4. Custom Composables
 
-- Default browser `<video controls>` are hidden for design flexibility.
-- Custom `VideoControls.vue` allows unified play, pause, and seek for:
-  - Normal playback mode
-  - Highlight-only playback mode
-- Smooth transitions and fade effects added for better UX.
+- `useVideoPreviewController.js`  
+  Manages play/pause logic and mode switching between normal and highlight playback.
+
+- `useVideoPreviewPlayer.js`  
+  Implements smooth highlight playback using `requestAnimationFrame` to ensure fluid transitions and accurate timing (vs. using `setTimeout`).
+
+These composables abstract playback logic out of the UI components, improving code maintainability and testability.
 
 ---
 
-## 5. AI Mock API
+## 5. Custom Video Controls
+
+- `VideoControls.vue` replaces the default video controls with custom UI that includes:
+
+  - Play / Pause button
+  - Toggle for highlight playback mode
+  - Skip to next / previous highlight segment
+  - Time display and highlight-aware progress bar
+
+- Works with `ProgressBar.vue` to show both current playback position and highlight markers.
+
+---
+
+## 6. AI Mock API
 
 - Created `getTranscriptData()` to simulate AI transcript output.
 - Mock returns structured JSON including:
@@ -49,7 +64,7 @@ This document outlines the technical decisions made during the development of th
 
 ---
 
-## 6. UX & Synchronization
+## 7. UX & Synchronization
 
 - Clicking timestamps updates video preview instantly.
 - Active sentence highlighted and auto-scrolls during playback.
@@ -57,7 +72,7 @@ This document outlines the technical decisions made during the development of th
 
 ---
 
-## 7. Scalability & Readability
+## 8. Scalability & Readability
 
 - Modular folder structure (`components`, `api`, `stores`)
 - Clear naming and comments for maintainability.
