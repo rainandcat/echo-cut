@@ -3,18 +3,23 @@ import { ref } from "vue";
 export function useVideoPreviewPlayer(videoRef, highlights, subtitleRef) {
   const isPlaying = ref(false);
   const currentIndex = ref(0);
+  const hasEnded = ref(false);
+
   let resumeTimeout = null;
 
   function resetSubtitle() {
     if (subtitleRef) subtitleRef.value = "";
   }
 
-    function playNext(resume = false, resumeRange = {}) {
+  function playNext(resume = false, resumeRange = {}) {
     if (!videoRef.value || currentIndex.value >= highlights.value.length) {
       isPlaying.value = false;
+      hasEnded.value = true;
       resetSubtitle();
       return;
     }
+
+    hasEnded.value = false;
 
     const highlight = highlights.value[currentIndex.value];
     const startTime = resume ? resumeRange.start : highlight.start;
@@ -38,6 +43,12 @@ export function useVideoPreviewPlayer(videoRef, highlights, subtitleRef) {
       resetSubtitle();
       playNext();
     }, duration);
+  }
+
+  function restart() {
+    currentIndex.value = 0;
+    hasEnded.value = false;
+    playNext();
   }
 
   function stop() {
@@ -67,9 +78,11 @@ export function useVideoPreviewPlayer(videoRef, highlights, subtitleRef) {
 
   return {
     isPlaying,
+    hasEnded, 
+    currentIndex,
     playNext,
     stop,
     seekTo,
-    currentIndex,
+    restart,
   };
 }  

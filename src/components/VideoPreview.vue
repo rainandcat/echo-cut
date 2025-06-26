@@ -16,13 +16,18 @@ const highlightRanges = ref([]);
 const manuallyPaused = ref(true);
 
 const { play, pause, seek, onTimeUpdate } = useVideoPreviewController(video);
-const { isPlaying, playNext, stop, seekTo, currentIndex } =
+const { isPlaying, playNext, stop, seekTo, restart, hasEnded, currentIndex } =
   useVideoPreviewPlayer(video, highlightRanges, currentSubtitle);
 
 function handlePlay() {
   if (highlightMode.value) {
-    manuallyPaused.value = false;
-    playNext();
+    if (hasEnded.value) {
+      manuallyPaused.value = false;
+      restart();
+    } else {
+      manuallyPaused.value = false;
+      playNext();
+    }
   } else {
     manuallyPaused.value = false;
     play();

@@ -2,7 +2,7 @@
 <script setup>
 import { computed } from "vue";
 import { formatTime } from "../utils/time";
-import Timeline from "./Timeline.vue";
+import ProgressBar from "./ProgressBar.vue";
 
 const props = defineProps({
   isPlaying: Boolean,
@@ -33,15 +33,7 @@ const formattedCurrent = computed(() => formatTime(props.currentTime));
       {{ isPlaying ? "Pause" : "Play" }}
     </button>
     <div class="w-full">
-      <input
-        type="range"
-        min="0"
-        :value="currentTime"
-        step="0.1"
-        @input="handleSeek"
-        class="w-full"
-      />
-      <Timeline />
+      <ProgressBar :duration="100" :currentTime="currentTime" />
     </div>
 
     <span class="text-sm">{{ formattedCurrent }}</span>
