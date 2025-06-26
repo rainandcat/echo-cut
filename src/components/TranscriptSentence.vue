@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useVideoStore } from "../stores/video";
 import { formatTime } from "../utils/time";
 
@@ -8,7 +8,6 @@ const sentenceEl = ref(null);
 const store = useVideoStore();
 
 function toggleHighlight() {
-  // props.sentence.highlight = !props.sentence.highlight;
   store.toggleHighlight(props.sentence);
 }
 
@@ -16,6 +15,12 @@ function handleTimestampClick(e) {
   e.stopPropagation();
   store.seekTo?.(props.sentence.start);
 }
+
+const sentenceClass = computed(() => {
+  if (active.value) return "bg-yellow-200";
+  if (props.sentence.highlight) return "bg-primary text-white";
+  return "hover:bg-secondary";
+});
 
 const active = ref(false);
 
@@ -39,19 +44,19 @@ defineExpose({ updateActive });
     ref="sentenceEl"
     :class="[
       'px-2 py-1 rounded my-1 transition-colors duration-200',
-      active
-        ? 'bg-yellow-200'
-        : sentence.highlight
-        ? 'bg-primary text-white'
-        : 'hover:bg-secondary',
+      sentenceClass,
     ]"
     @click="toggleHighlight"
   >
     <span
       class="text-time font-mono mr-2 underline cursor-pointer"
       @click="handleTimestampClick"
+      v-if="sentence.highlight"
       >{{ formatTime(sentence.start) }}</span
     >
+    <span class="text-gray-500 font-mono mr-2" v-else>{{
+      formatTime(sentence.start)
+    }}</span>
     {{ sentence.text }}
   </div>
 </template>
