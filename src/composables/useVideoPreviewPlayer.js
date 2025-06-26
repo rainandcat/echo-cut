@@ -48,7 +48,7 @@ export function useVideoPreviewPlayer(videoRef, highlights, subtitleRef) {
         currentIndex.value++;
         resetSubtitle();
         playNext();
-      }, 500);
+      }, 300);
     }, duration);
   }
 
