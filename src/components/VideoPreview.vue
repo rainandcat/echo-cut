@@ -153,8 +153,21 @@ const duration = computed(() => video.value?.duration || 0);
     <div class="flex items-center justify-between mb-2">
       <p class="text-left">Preview - {{ videoName }}</p>
       <label class="flex items-center space-x-2 text-sm text-white">
-        <input type="checkbox" v-model="highlightMode" />
-        <span>Highlight Mode</span>
+        <div class="relative">
+          <input
+            id="highlightToggle"
+            type="checkbox"
+            class="sr-only peer"
+            v-model="highlightMode"
+          />
+          <div
+            class="w-11 h-6 bg-gray-400 rounded-full peer-checked:bg-primary transition-colors duration-300"
+          ></div>
+          <div
+            class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-full"
+          ></div>
+        </div>
+        <span class="ml-3">Highlight Mode</span>
       </label>
     </div>
 
